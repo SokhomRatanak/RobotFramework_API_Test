@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generated="20180328 11:27:09.137" generator="Robot 3.0.2 (Python 2.7.12 on linux2)">
+<suite source="/home/ratanak/dev/github/RobotFramework_API_Test/Tests/API_Test.robot" id="s1" name="API Test">
+<test id="s1-t1" name="Postcode repose with its city">
+<kw name="Postcode should match city in JSON response" library="GoogleMap">
+<arguments>
+<arg>20250</arg>
+<arg>Turku</arg>
+</arguments>
+<kw name="Create Session" library="RequestsLibrary">
+<doc>Create Session: create a HTTP session to a server</doc>
+<arguments>
+<arg>googleapi</arg>
+<arg>http://maps.googleapis.com/</arg>
+</arguments>
+<msg timestamp="20180328 11:27:09.212" level="INFO">Creating Session using : alias=googleapi, url=http://maps.googleapis.com/, headers={},                     cookies=None, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
+<status status="PASS" endtime="20180328 11:27:09.212" starttime="20180328 11:27:09.212"></status>
+</kw>
+<kw name="Get Request" library="RequestsLibrary">
+<doc>Send a GET request on the session object found using the</doc>
+<arguments>
+<arg>googleapi</arg>
+<arg>maps/api/geocode/json?address=${postal_code},Finland</arg>
+</arguments>
+<assign>
+<var>${response}</var>
+</assign>
+<msg timestamp="20180328 11:27:09.638" level="INFO">Get Request using : alias=googleapi, uri=maps/api/geocode/json?address=20250,Finland, headers=None json=None</msg>
+<msg timestamp="20180328 11:27:09.638" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<status status="PASS" endtime="20180328 11:27:09.639" starttime="20180328 11:27:09.212"></status>
+</kw>
+<kw name="Should Be Equal" library="BuiltIn">
+<doc>Fails if the given objects are unequal.</doc>
+<arguments>
+<arg>${response.status_code}</arg>
+<arg>${200}</arg>
+</arguments>
+<status status="PASS" endtime="20180328 11:27:09.640" starttime="20180328 11:27:09.639"></status>
+</kw>
+<kw name="Get From Dictionary" library="Collections">
+<doc>Returns a value from the given ``dictionary`` based on the given ``key``.</doc>
+<arguments>
+<arg>${response.json()}</arg>
+<arg>status</arg>
+</arguments>
+<assign>
+<var>${status_element}</var>
+</assign>
+<msg timestamp="20180328 11:27:09.642" level="INFO">${status_element} = OK</msg>
+<status status="PASS" endtime="20180328 11:27:09.642" starttime="20180328 11:27:09.641"></status>
+</kw>
+<kw name="Should Be Equal As Strings" library="BuiltIn">
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<arguments>
+<arg>${status_element}</arg>
+<arg>OK</arg>
+</arguments>
+<status status="PASS" endtime="20180328 11:27:09.643" starttime="20180328 11:27:09.642"></status>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<arguments>
+<arg>${response.json()['results'][0]['formatted_address']}</arg>
+</arguments>
+<assign>
+<var>${returned_address}</var>
+</assign>
+<msg timestamp="20180328 11:27:09.645" level="INFO">${returned_address} = 20250 Turku, Finland</msg>
+<status status="PASS" endtime="20180328 11:27:09.645" starttime="20180328 11:27:09.644"></status>
+</kw>
+<kw name="Fetch City From Formatted Address" library="GoogleMap">
+<arguments>
+<arg>${returned_address}</arg>
+</arguments>
+<assign>
+<var>${returned_city}</var>
+</assign>
+<kw name="Fetch From Left" library="String">
+<doc>Returns contents of the ``string`` before the first occurrence of ``marker``.</doc>
+<arguments>
+<arg>${raw_address}</arg>
+<arg>,</arg>
+</arguments>
+<assign>
+<var>${addr}</var>
+</assign>
+<msg timestamp="20180328 11:27:09.646" level="INFO">${addr} = 20250 Turku</msg>
+<status status="PASS" endtime="20180328 11:27:09.646" starttime="20180328 11:27:09.645"></status>
+</kw>
+<kw name="Fetch From Right" library="String">
+<doc>Returns contents of the ``string`` after the last occurrence of ``marker``.</doc>
+<arguments>
+<arg>${addr}</arg>
+<arg>${SPACE}</arg>
+</arguments>
+<assign>
+<var>${addr}</var>
+</assign>
+<msg timestamp="20180328 11:27:09.646" level="INFO">${addr} = Turku</msg>
+<status status="PASS" endtime="20180328 11:27:09.646" starttime="20180328 11:27:09.646"></status>
+</kw>
+<msg timestamp="20180328 11:27:09.646" level="INFO">${returned_city} = Turku</msg>
+<status status="PASS" endtime="20180328 11:27:09.646" starttime="20180328 11:27:09.645"></status>
+</kw>
+<kw name="Should Be Equal As Strings" library="BuiltIn">
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<arguments>
+<arg>${returned_city}</arg>
+<arg>${expected_city}</arg>
+</arguments>
+<status status="PASS" endtime="20180328 11:27:09.647" starttime="20180328 11:27:09.647"></status>
+</kw>
+<kw name="Delete All Sessions" library="RequestsLibrary">
+<doc>Removes all the session objects</doc>
+<msg timestamp="20180328 11:27:09.647" level="INFO">Delete All Sessions</msg>
+<status status="PASS" endtime="20180328 11:27:09.647" starttime="20180328 11:27:09.647"></status>
+</kw>
+<status status="PASS" endtime="20180328 11:27:09.647" starttime="20180328 11:27:09.211"></status>
+</kw>
+<kw name="Postcode should match city in JSON response" library="GoogleMap">
+<arguments>
+<arg>02200</arg>
+<arg>Espoo</arg>
+</arguments>
+<kw name="Create Session" library="RequestsLibrary">
+<doc>Create Session: create a HTTP session to a server</doc>
+<arguments>
+<arg>googleapi</arg>
+<arg>http://maps.googleapis.com/</arg>
+</arguments>
+<msg timestamp="20180328 11:27:09.648" level="INFO">Creating Session using : alias=googleapi, url=http://maps.googleapis.com/, headers={},                     cookies=None, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
+<status status="PASS" endtime="20180328 11:27:09.648" starttime="20180328 11:27:09.648"></status>
+</kw>
+<kw name="Get Request" library="RequestsLibrary">
+<doc>Send a GET request on the session object found using the</doc>
+<arguments>
+<arg>googleapi</arg>
+<arg>maps/api/geocode/json?address=${postal_code},Finland</arg>
+</arguments>
+<assign>
+<var>${response}</var>
+</assign>
+<msg timestamp="20180328 11:27:10.411" level="INFO">Get Request using : alias=googleapi, uri=maps/api/geocode/json?address=02200,Finland, headers=None json=None</msg>
+<msg timestamp="20180328 11:27:10.411" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<status status="PASS" endtime="20180328 11:27:10.412" starttime="20180328 11:27:09.648"></status>
+</kw>
+<kw name="Should Be Equal" library="BuiltIn">
+<doc>Fails if the given objects are unequal.</doc>
+<arguments>
+<arg>${response.status_code}</arg>
+<arg>${200}</arg>
+</arguments>
+<status status="PASS" endtime="20180328 11:27:10.413" starttime="20180328 11:27:10.412"></status>
+</kw>
+<kw name="Get From Dictionary" library="Collections">
+<doc>Returns a value from the given ``dictionary`` based on the given ``key``.</doc>
+<arguments>
+<arg>${response.json()}</arg>
+<arg>status</arg>
+</arguments>
+<assign>
+<var>${status_element}</var>
+</assign>
+<msg timestamp="20180328 11:27:10.414" level="INFO">${status_element} = OK</msg>
+<status status="PASS" endtime="20180328 11:27:10.414" starttime="20180328 11:27:10.413"></status>
+</kw>
+<kw name="Should Be Equal As Strings" library="BuiltIn">
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<arguments>
+<arg>${status_element}</arg>
+<arg>OK</arg>
+</arguments>
+<status status="PASS" endtime="20180328 11:27:10.415" starttime="20180328 11:27:10.415"></status>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<arguments>
+<arg>${response.json()['results'][0]['formatted_address']}</arg>
+</arguments>
+<assign>
+<var>${returned_address}</var>
+</assign>
+<msg timestamp="20180328 11:27:10.417" level="INFO">${returned_address} = 02200 Espoo, Finland</msg>
+<status status="PASS" endtime="20180328 11:27:10.417" starttime="20180328 11:27:10.416"></status>
+</kw>
+<kw name="Fetch City From Formatted Address" library="GoogleMap">
+<arguments>
+<arg>${returned_address}</arg>
+</arguments>
+<assign>
+<var>${returned_city}</var>
+</assign>
+<kw name="Fetch From Left" library="String">
+<doc>Returns contents of the ``string`` before the first occurrence of ``marker``.</doc>
+<arguments>
+<arg>${raw_address}</arg>
+<arg>,</arg>
+</arguments>
+<assign>
+<var>${addr}</var>
+</assign>
+<msg timestamp="20180328 11:27:10.419" level="INFO">${addr} = 02200 Espoo</msg>
+<status status="PASS" endtime="20180328 11:27:10.419" starttime="20180328 11:27:10.418"></status>
+</kw>
+<kw name="Fetch From Right" library="String">
+<doc>Returns contents of the ``string`` after the last occurrence of ``marker``.</doc>
+<arguments>
+<arg>${addr}</arg>
+<arg>${SPACE}</arg>
+</arguments>
+<assign>
+<var>${addr}</var>
+</assign>
+<msg timestamp="20180328 11:27:10.420" level="INFO">${addr} = Espoo</msg>
+<status status="PASS" endtime="20180328 11:27:10.420" starttime="20180328 11:27:10.419"></status>
+</kw>
+<msg timestamp="20180328 11:27:10.420" level="INFO">${returned_city} = Espoo</msg>
+<status status="PASS" endtime="20180328 11:27:10.420" starttime="20180328 11:27:10.417"></status>
+</kw>
+<kw name="Should Be Equal As Strings" library="BuiltIn">
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<arguments>
+<arg>${returned_city}</arg>
+<arg>${expected_city}</arg>
+</arguments>
+<status status="PASS" endtime="20180328 11:27:10.421" starttime="20180328 11:27:10.421"></status>
+</kw>
+<kw name="Delete All Sessions" library="RequestsLibrary">
+<doc>Removes all the session objects</doc>
+<msg timestamp="20180328 11:27:10.422" level="INFO">Delete All Sessions</msg>
+<status status="PASS" endtime="20180328 11:27:10.422" starttime="20180328 11:27:10.422"></status>
+</kw>
+<status status="PASS" endtime="20180328 11:27:10.422" starttime="20180328 11:27:09.647"></status>
+</kw>
+<tags>
+<tag>API</tag>
+</tags>
+<status status="PASS" endtime="20180328 11:27:10.423" critical="yes" starttime="20180328 11:27:09.210"></status>
+</test>
+<doc>Basic API test on Google Map</doc>
+<status status="PASS" endtime="20180328 11:27:10.424" starttime="20180328 11:27:09.139"></status>
+</suite>
+<statistics>
+<total>
+<stat fail="0" pass="1">Critical Tests</stat>
+<stat fail="0" pass="1">All Tests</stat>
+</total>
+<tag>
+<stat fail="0" pass="1">API</stat>
+</tag>
+<suite>
+<stat fail="0" id="s1" name="API Test" pass="1">API Test</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>
